@@ -1,0 +1,10 @@
+[12-Jun-2025 14:45:09 America/Lima] PHP Fatal error:  Uncaught PDOException: There is no active transaction in /home/spacioso/sistematransporte.spaciosolutions.com.pe/planificacion/guardarreprogrmacioncliente.php:62
+Stack trace:
+#0 /home/spacioso/sistematransporte.spaciosolutions.com.pe/planificacion/guardarreprogrmacioncliente.php(62): PDO->rollBack()
+#1 {main}
+  thrown in /home/spacioso/sistematransporte.spaciosolutions.com.pe/planificacion/guardarreprogrmacioncliente.php on line 62
+[12-Jun-2025 14:45:16 America/Lima] PHP Fatal error:  Uncaught PDOException: There is no active transaction in /home/spacioso/sistematransporte.spaciosolutions.com.pe/planificacion/guardarreprogrmacioncliente.php:62
+Stack trace:
+#0 /home/spacioso/sistematransporte.spaciosolutions.com.pe/planificacion/guardarreprogrmacioncliente.php(62): PDO->rollBack()
+#1 {main}
+  thrown in /home/spacioso/sistematransporte.spaciosolutions.com.pe/planificacion/guardarreprogrmacioncliente.php on line 62

@@ -1,0 +1,5 @@
+[05-Jun-2025 17:58:05 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`spacioso_transporte`.`categoria_producto`, CONSTRAINT `fk_categoria_almacen` FOREIGN KEY (`idAlmacen`) REFERENCES `almacen` (`idAlmacen`)) in /home/spacioso/sistematransporte.spaciosolutions.com.pe/almacen/eliminar.php:9
+Stack trace:
+#0 /home/spacioso/sistematransporte.spaciosolutions.com.pe/almacen/eliminar.php(9): PDOStatement->execute(Array)
+#1 {main}
+  thrown in /home/spacioso/sistematransporte.spaciosolutions.com.pe/almacen/eliminar.php on line 9
