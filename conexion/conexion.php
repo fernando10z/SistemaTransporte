@@ -1,8 +1,8 @@
 <?php
 $host = "localhost";
 $dbname = "spacioso_transporte";
-$username = "spacioso_transporte";
-$password = "ofaDM(c&(blk";
+$username = "root";
+$password = "";
 
 try {
     $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);

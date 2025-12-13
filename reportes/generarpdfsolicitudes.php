@@ -15,7 +15,7 @@ if (!$solicitudes || empty($solicitudes)) {
 }
 
 // Obtener la ruta absoluta del logo
-$logoPath = __DIR__ . "/../configuracion/empresa/logo_68336f0e8e937.jpeg";
+$logoPath = __DIR__ . "/../configuracion/empresa/logo_683f42f234013.jpeg";
 
 // Verificar si el logo existe
 if (!file_exists($logoPath)) {
