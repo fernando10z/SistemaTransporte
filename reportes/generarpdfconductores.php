@@ -130,28 +130,28 @@ foreach ($conductores as $conductor) {
     $html .= '<tr>';
     
     // ID
-    $html .= '<td>' . htmlspecialchars($conductor[0]) . '</td>';
+    $html .= '<td>' . strip_tags($conductor[0]) . '</td>';
     
     // Nombre Completo
-    $html .= '<td>' . htmlspecialchars($conductor[1]) . '</td>';
+    $html .= '<td>' . strip_tags($conductor[1]) . '</td>';
     
     // Documento
-    $html .= '<td>' . htmlspecialchars($conductor[2]) . '</td>';
+    $html .= '<td>' . strip_tags($conductor[2]) . '</td>';
     
     // Género
-    $html .= '<td>' . htmlspecialchars($conductor[3]) . '</td>';
+    $html .= '<td>' . strip_tags($conductor[3]) . '</td>';
     
     // Dirección
-    $html .= '<td>' . htmlspecialchars($conductor[4]) . '</td>';
+    $html .= '<td>' . strip_tags($conductor[4]) . '</td>';
     
     // Licencia
-    $html .= '<td>' . htmlspecialchars($conductor[5]) . '</td>';
+    $html .= '<td>' . strip_tags($conductor[5]) . '</td>';
     
     // Teléfono
-    $html .= '<td>' . htmlspecialchars($conductor[6]) . '</td>';
+    $html .= '<td>' . strip_tags($conductor[6]) . '</td>';
     
     // Correo
-    $html .= '<td>' . htmlspecialchars($conductor[7]) . '</td>';
+    $html .= '<td>' . strip_tags($conductor[7]) . '</td>';
     
     // Estado
     $estado = $conductor[8];
