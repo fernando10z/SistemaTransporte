@@ -1,5 +1,6 @@
 <?php
 require_once 'vendor/autoload.php';
+require_once '../conexion/conexion.php'; 
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
@@ -14,17 +15,40 @@ if (!$cotizaciones || empty($cotizaciones)) {
     die("No se recibieron datos para exportar. Por favor aplique filtros y vuelva a intentarlo.");
 }
 
-// Obtener la ruta absoluta del logo
-$logoPath = __DIR__ . "/../configuracion/empresa/logo_683f42f234013.jpeg";
+// Obtener logo desde la base de datos
+function obtenerLogoDB($conn) {
+    try {
+        $sql = "SELECT logo FROM configuracion_empresa WHERE id_configuracion = 4 LIMIT 1";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $resultado ? $resultado['logo'] : null;
+    } catch (Exception $e) {
+        return null;
+    }
+}
 
-// Verificar si el logo existe
-if (!file_exists($logoPath)) {
-    // Logo alternativo si no existe
-    $logoSrc = 'data:image/svg+xml;base64,' . base64_encode('<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#5d87ff"/><text x="50%" y="50%" font-size="20" text-anchor="middle" fill="white" dy=".3em">EMPRESA</text></svg>');
-} else {
-    // Convertir la ruta local a base64 para que Dompdf lo pueda procesar
-    $logoBase64 = base64_encode(file_get_contents($logoPath));
-    $logoSrc = 'data:image/jpeg;base64,' . $logoBase64;
+$logoNombre = obtenerLogoDB($conn);
+$logoSrc = '';
+
+if ($logoNombre) {
+    $logoPath = __DIR__ . "/../configuracion/empresa/" . $logoNombre;
+    
+    if (file_exists($logoPath)) {
+        // Detectar tipo de imagen
+        $extension = strtolower(pathinfo($logoNombre, PATHINFO_EXTENSION));
+        $mimeType = 'image/jpeg';
+        
+        switch ($extension) {
+            case 'png': $mimeType = 'image/png'; break;
+            case 'gif': $mimeType = 'image/gif'; break;
+            case 'webp': $mimeType = 'image/webp'; break;
+            default: $mimeType = 'image/jpeg';
+        }
+        
+        $logoBase64 = base64_encode(file_get_contents($logoPath));
+        $logoSrc = 'data:' . $mimeType . ';base64,' . $logoBase64;
+    }
 }
 
 // Configuración de estilos CSS
