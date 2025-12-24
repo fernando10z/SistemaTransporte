@@ -1,5 +1,6 @@
 <?php
 require_once 'vendor/autoload.php';
+require_once '../conexion/conexion.php';
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
@@ -15,7 +16,40 @@ if (!$zonas || empty($zonas)) {
 }
 
 // Obtener la ruta absoluta del logo
-$logoPath = __DIR__ . "/../configuracion/empresa/logo_68336f0e8e937.jpeg";
+function obtenerLogoDB($conn) {
+    try {
+        $sql = "SELECT logo FROM configuracion_empresa WHERE id_configuracion = 4 LIMIT 1";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $resultado ? $resultado['logo'] : null;
+    } catch (Exception $e) {
+        return null;
+    }
+}
+
+$logoNombre = obtenerLogoDB($conn);
+$logoSrc = '';
+
+if ($logoNombre) {
+    $logoPath = __DIR__ . "/../configuracion/empresa/" . $logoNombre;
+    
+    if (file_exists($logoPath)) {
+        // Detectar tipo de imagen
+        $extension = strtolower(pathinfo($logoNombre, PATHINFO_EXTENSION));
+        $mimeType = 'image/jpeg';
+        
+        switch ($extension) {
+            case 'png': $mimeType = 'image/png'; break;
+            case 'gif': $mimeType = 'image/gif'; break;
+            case 'webp': $mimeType = 'image/webp'; break;
+            default: $mimeType = 'image/jpeg';
+        }
+        
+        $logoBase64 = base64_encode(file_get_contents($logoPath));
+        $logoSrc = 'data:' . $mimeType . ';base64,' . $logoBase64;
+    }
+}
 
 // Verificar si el logo existe
 if (!file_exists($logoPath)) {
