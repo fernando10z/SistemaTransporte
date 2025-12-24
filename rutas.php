@@ -555,7 +555,7 @@
                   $sql = "
                   SELECT 
                       r.idRuta AS id,
-                      z.nombreZona,
+                      z.idZona,
                       r.origen,
                       r.destino,
                       r.distancia_km,
@@ -574,7 +574,7 @@
                   foreach ($rutas as $row) {
                       echo "<tr>";
                       echo "<td><span class='id-ruta'>{$row['id']}</span></td>";
-                      echo "<td>{$row['nombreZona']}</td>";
+                      echo "<td>{$row['idZona']}</td>";
                       echo "<td>{$row['origen']}</td>";
                       echo "<td>{$row['destino']}</td>";
                       echo "<td>{$row['distancia_km']} km</td>";
