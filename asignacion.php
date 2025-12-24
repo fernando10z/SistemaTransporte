@@ -827,9 +827,7 @@
                 link.click();
                 document.body.removeChild(link);
             });
- setTimeout(() => {
-        location.reload();
-    }, 2000);
+
 
             // Mostrar modal
             $('#qrModal').modal('show');
