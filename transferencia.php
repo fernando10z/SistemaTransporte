@@ -568,6 +568,7 @@
                     <th width="120px">Monto</th>
                     <th width="100px">Fecha</th>
                     <th>Método Pago</th>
+                    <th>Observaciones</th>
                     <th width="90px">Estado</th>
                     <th width="130px" class="text-center">Acciones</th>
                   </tr>
@@ -579,6 +580,7 @@
                     <th><input type="text" class="column-filter" placeholder="Monto"></th>
                     <th><input type="text" class="column-filter" placeholder="Fecha"></th>
                     <th><input type="text" class="column-filter" placeholder="Método"></th>
+                    <th><input type="text" class="column-filter" placeholder="Observaciones"></th>
                     <th><input type="text" class="column-filter" placeholder="Estado"></th>
                     <th></th>
                   </tr>
@@ -621,12 +623,17 @@
                       echo "<td class='text-end'>S/ " . number_format($row['monto'], 2) . "</td>";
                       echo "<td>" . date('d/m/Y', strtotime($row['fecha'])) . "</td>";
                       echo "<td>{$row['metodo_pago']}</td>";
+                      echo "<td>{$row['observaciones']}</td>";
                       
                       // Estado con badge e icono
                       $estadoIcono = $row['estado'] === 'Activo' ? 'fa-check-circle' : 'fa-times-circle';
-                      echo "<td class='text-center'><span class='badge bg-" . ($row['estado'] === 'Activo' ? 'success' : 'danger') . "'>
-                            <i class='fas {$estadoIcono} me-1'></i> {$row['estado']}
-                            </span></td>";
+                      $badgeClass = $row['estado'] === 'Activo' ? 'success' : 'danger';
+
+                      echo "<td class='text-center'>";
+                      echo "<span class='badge bg-{$badgeClass}' data-filter='{$row['estado']}'>";
+                      echo "<i class='fas {$estadoIcono} me-1'></i>{$row['estado']}";
+                      echo "</span>";
+                      echo "</td>";
                       
                       // Botones de acción
                       echo "<td class='text-center'>";
@@ -762,7 +769,12 @@ $(document).ready(function() {
       
       // Filtro por estado
       $('#filtroEstado').on('change', function() {
-        table.column(7).search(this.value).draw();
+          var val = $(this).val();
+          
+          // Usamos concordancia exacta con RegEx para evitar que 'Activo' coincida con 'Inactivo'
+          table.column(8)
+              .search(val ? '^' + $.fn.dataTable.util.escapeRegex(val) + '$' : '', true, false)
+              .draw();
       });
       
       // Filtro por método de pago
@@ -798,7 +810,7 @@ $(document).ready(function() {
     // Personalizar el render de ciertas columnas
     columnDefs: [
       { 
-        targets: [1, 7], // Tipo y Estado
+        targets: [1, 8], // Tipo y Estado
         className: 'text-center'
       },
       {
@@ -806,7 +818,7 @@ $(document).ready(function() {
         className: 'text-end'
       },
       {
-        targets: 8, // Acciones
+        targets: 9, // Acciones
         className: 'text-center',
         orderable: false,
         searchable: false
@@ -835,7 +847,8 @@ $(document).ready(function() {
         monto: $(row).find('td:eq(4)').text(),
         fecha: $(row).find('td:eq(5)').text(),
         metodo_pago: $(row).find('td:eq(6)').text(),
-        estado: $(row).find('td:eq(7)').text().trim()
+        observacion: $(row).find('td:eq(7)').text().trim(), 
+        estado: $(row).find('td:eq(8)').text().trim()
       };
       filteredData.push(data);
     });
