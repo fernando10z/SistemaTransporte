@@ -1,5 +1,6 @@
 <?php
 require_once 'vendor/autoload.php';
+require_once '../conexion/conexion.php'; 
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
@@ -14,18 +15,89 @@ if (!$movimientos || empty($movimientos)) {
     die("No se recibieron datos para exportar. Por favor aplique filtros y vuelva a intentarlo.");
 }
 
-// Obtener la ruta absoluta del logo
-$logoPath = __DIR__ . "/../configuracion/empresa/logo_68336f0e8e937.jpeg";
-
-// Verificar si el logo existe
-if (!file_exists($logoPath)) {
-    // Logo alternativo si no existe
-    $logoSrc = 'data:image/svg+xml;base64,' . base64_encode('<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#5d87ff"/><text x="50%" y="50%" font-size="20" text-anchor="middle" fill="white" dy=".3em">EMPRESA</text></svg>');
-} else {
-    // Convertir la ruta local a base64 para que Dompdf lo pueda procesar
-    $logoBase64 = base64_encode(file_get_contents($logoPath));
-    $logoSrc = 'data:image/jpeg;base64,' . $logoBase64;
+// Función para limpiar HTML y obtener solo texto
+function limpiarHTML($texto) {
+    if (empty($texto)) return '';
+    // Eliminar etiquetas HTML y decodificar entidades
+    $limpio = strip_tags($texto);
+    $limpio = html_entity_decode($limpio, ENT_QUOTES, 'UTF-8');
+    return trim($limpio);
 }
+
+// Obtener logo desde la base de datos
+function obtenerLogoDB($conn) {
+    try {
+        $sql = "SELECT logo FROM configuracion_empresa WHERE id_configuracion = 4 LIMIT 1";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $resultado ? $resultado['logo'] : null;
+    } catch (Exception $e) {
+        return null;
+    }
+}
+
+function obtenernombreempresa($conn) {
+    try {
+        $sql = "SELECT nombre_empresa FROM configuracion_empresa WHERE id_configuracion = 4 LIMIT 1";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $resultado ? $resultado['nombre_empresa'] : null;
+    } catch (Exception $e) {
+        return null;
+    }
+}
+
+function obtenerrucempresa($conn) {
+    try {
+        $sql = "SELECT ruc FROM configuracion_empresa WHERE id_configuracion = 4 LIMIT 1";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $resultado ? $resultado['ruc'] : null;
+    } catch (Exception $e) {
+        return null;
+    }
+}
+
+// Obtener logo desde BD
+$logoNombre = obtenerLogoDB($conn);
+$logoSrc = '';
+
+//Obtener Ruc desde BD
+$ruc = obtenerrucempresa($conn);
+
+
+//Obtener Nombre de la empresa BD
+$nombreEmpresa = obtenernombreempresa($conn);
+
+
+if ($logoNombre) {
+    $logoPath = __DIR__ . "/../configuracion/empresa/" . $logoNombre;
+    
+    if (file_exists($logoPath)) {
+        // Detectar tipo de imagen
+        $extension = strtolower(pathinfo($logoNombre, PATHINFO_EXTENSION));
+        $mimeType = 'image/jpeg';
+        
+        switch ($extension) {
+            case 'png': $mimeType = 'image/png'; break;
+            case 'gif': $mimeType = 'image/gif'; break;
+            case 'webp': $mimeType = 'image/webp'; break;
+            default: $mimeType = 'image/jpeg';
+        }
+        
+        $logoBase64 = base64_encode(file_get_contents($logoPath));
+        $logoSrc = 'data:' . $mimeType . ';base64,' . $logoBase64;
+    }
+}
+
+// Logo alternativo si no existe
+if (empty($logoSrc)) {
+    $logoSrc = 'data:image/svg+xml;base64,' . base64_encode('<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#5d87ff"/><text x="50%" y="50%" font-size="16" text-anchor="middle" fill="white" dy=".3em">EMPRESA</text></svg>');
+}
+
 
 // Configuración de estilos CSS
 $html = '<style>
@@ -58,8 +130,8 @@ $html .= '<table width="100%">
         </td>
         <td width="60%" style="text-align: center;">
             <div class="header">
-                <h2 class="title">GESTIÓN DE MOVIMIENTOS DE PRODUCTOS</h2>
-                <p class="subtitle">Reporte de Movimientos de Inventario</p>
+                <div class="title">'. $nombreEmpresa .'</div>
+                <div class="subtitle">Ruc de la empresa: '. $ruc .'</div>
             </div>
         </td>
         <td width="20%" style="text-align: right;">
@@ -94,19 +166,6 @@ foreach ($movimientos as $mov) {
     elseif ($mov[10] === 'Devolución') $devoluciones++;
 }
 
-$html .= '<div style="margin-top: 15px; font-weight: bold; padding: 10px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa;">
-    <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-        <div style="width: 24%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px; margin-bottom: 5px;">
-            <strong>Total Movimientos:</strong> ' . $totalMovimientos . '
-        </div>
-        <div style="width: 24%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px; margin-bottom: 5px;">
-            <strong>Entradas:</strong> ' . $entradas . '
-        </div>
-        <div style="width: 24%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px; margin-bottom: 5px;">
-            <strong>Salidas:</strong> ' . $salidas . '
-        </div>
-    </div>';
-
 // Sección del listado de movimientos
 $html .= '<div style="margin-top: 15px; font-weight: bold; background-color: #5d87ff; color: white; padding: 10px; border-radius: 5px;">DETALLE DE MOVIMIENTOS</div>';
 $html .= '<table class="table-container">
@@ -130,7 +189,7 @@ $html .= '<table class="table-container">
 // Recorrer cada registro
 foreach ($movimientos as $mov) {
     $html .= '<tr>';
-    $html .= '<td>' . htmlspecialchars($mov[0]) . '</td>';
+    $html .= '<td>' . $mov[0] . '</td>';
     $html .= '<td>' . htmlspecialchars($mov[1]) . '</td>';
     $html .= '<td>' . htmlspecialchars($mov[2]) . '</td>';
     $html .= '<td>' . htmlspecialchars($mov[3]) . '</td>';
@@ -141,18 +200,22 @@ foreach ($movimientos as $mov) {
     $html .= '<td class="text-right">' . htmlspecialchars($mov[8]) . '</td>';
     $html .= '<td>' . htmlspecialchars($mov[9]) . '</td>';
     
-    // Motivo con badge
-    $motivo = $mov[10];
-    $badgeClass = '';
-    switch($motivo) {
-        case 'En tránsito': $badgeClass = 'bg-primary'; break;
-          case 'Almacenado': $badgeClass = 'bg-success'; break;
-         case 'Pendiente revisión': $badgeClass = 'bg-info'; break;
-          case 'Entrega': $badgeClass = 'bg-warning'; break;
-             case 'Traslado': $badgeClass = 'bg-secondary'; break;
-          default: $badgeClass = 'bg-light text-dark'; break;
-    }
-    $html .= '<td><span class="' . $badgeClass . '">' . htmlspecialchars($motivo) . '</span></td>';
+    // Motivo con color directo
+$motivo = strip_tags($mov[10]); // Nos aseguramos de tener solo el texto
+$color = '#f8f9fa'; // Color por defecto (gris claro)
+$textColor = '#000000';
+
+switch(trim($motivo)) {
+    case 'En tránsito':        $color = '#007bff'; $textColor = '#ffffff'; break;
+    case 'Almacenado':         $color = '#28a745'; $textColor = '#ffffff'; break;
+    case 'Pendiente revisión': $color = '#17a2b8'; $textColor = '#ffffff'; break;
+    case 'Entrega':            $color = '#ffc107'; $textColor = '#000000'; break;
+    case 'Traslado':           $color = '#6c757d'; $textColor = '#ffffff'; break;
+}
+
+// Generamos la celda con el estilo "inyectado" directamente
+$html .= '<td><span style="background-color: '.$color.'; color: '.$textColor.'; padding: 2px 5px; border-radius: 3px;">' . htmlspecialchars($motivo) . '</span></td>';
+
     
     $html .= '</tr>';
 }

@@ -583,7 +583,7 @@
                           p.codigoProducto,
                           p.nombreProducto,
                           p.stock_minimo,
-                          p.stock,
+                          mp.stock_inicial,
                           mp.stock_final,
                           mp.motivo,
                           mp.tipo
@@ -608,7 +608,7 @@
                       echo "<td>{$row['codigoProducto']}</td>";
                       echo "<td>{$row['nombreProducto']}</td>";
                       echo "<td>{$row['stock_minimo']}</td>";
-                      echo "<td>{$row['stock']}</td>";
+                      echo "<td>{$row['stock_inicial']}</td>";
                       echo "<td>{$row['stock_final']}</td>";
                       echo "<td>{$row['tipo']}</td>";
                       
