@@ -547,11 +547,13 @@
                     <th>Licencia</th>
                     <th>Curso</th>
                     <th>Fecha Inicio</th>
-                    <th>Fecha Fin</th>
+                    <th>Fecha Fin</th>                    
                     <th width="120px">Estado Curso</th>
+                    <th>Estados</th>
                     <th width="150px" class="text-center">Acciones</th>
                   </tr>
                   <tr class="filter-header">
+                    
                     <th><input type="text" class="column-filter" placeholder="ID"></th>
                     <th><input type="text" class="column-filter" placeholder="Conductor"></th>
                     <th><input type="text" class="column-filter" placeholder="Documento"></th>
@@ -581,6 +583,7 @@
                       rc.fechaInicio,
                       rc.fechaFinal,
                       rc.estado,
+                      con.estado,
                       con.estado AS estado_conductor
                   FROM registrarcurso rc
                   INNER JOIN cursos_conductor c ON rc.idCurso = c.idCurso
@@ -620,6 +623,8 @@
                       
                     
                       echo "</td>";
+
+                      echo "<td>{$row['estado']}</td>";
 
                       // Botones de acción
                       echo "<td class='text-center'>";
@@ -731,7 +736,7 @@ $(document).ready(function() {
       
       // Aplicar filtros por columna
       this.api().columns().every(function(colIdx) {
-        if (colIdx === 8) return; // No aplicar filtro a la columna de acciones
+        if (colIdx === 9) return; // No aplicar filtro a la columna de acciones
         
         var column = this;
         $('input', $('.filter-header th').eq(column.index())).on('keyup change', function() {
@@ -783,7 +788,7 @@ $(document).ready(function() {
         className: 'text-center'
       },
       {
-        targets: 8, // Acciones
+        targets: 9, // Acciones
         className: 'text-center',
         orderable: false,
         searchable: false
@@ -808,14 +813,18 @@ $(document).ready(function() {
       
       filteredData.push({
         idRegistro: $row.find('.id-registro').text(),
-        conductor: rowData[1],
-        documento: rowData[2],
-        licencia: rowData[3],
-        curso: rowData[4],
-        fechaInicio: rowData[5],
-        fechaFin: rowData[6],
-        estadoCurso: $(rowData[7]).text().split('\n')[0].trim(),
-        estadoConductor: $(rowData[7]).text().split('\n')[1].replace('Cond: ', '').trim()
+    conductor: rowData[1],
+    documento: rowData[2],
+    licencia: rowData[3],
+    curso: rowData[4],
+    fechaInicio: rowData[5],
+    fechaFin: rowData[6],
+    
+    // Columna 7: Estado del Curso (le quitamos espacios extra)
+    estadoCurso: $(rowData[7]).text().trim(), 
+    
+    // Columna 8: Tu nueva columna (Estado del Conductor)
+    estadoConductor: rowData[8]
       });
     });
     
