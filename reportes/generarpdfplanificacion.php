@@ -83,7 +83,9 @@ $estados = [
 ];
 
 foreach ($planificaciones as $plan) {
-    if ($plan['tipoPlanificacion'] === 'cliente') {
+    $tipoRaw = strtolower($plan['tipoPlanificacion'] ?? '');
+    
+    if ($tipoRaw === 'cliente') {
         $planificacionesCliente++;
     } else {
         $planificacionesEmpresa++;
@@ -150,7 +152,7 @@ foreach ($planificaciones as $plan) {
     $tipo = $plan['tipoPlanificacion'] === 'cliente' ? 'Cliente' : 'Empresa';
     $html .= '<td>' . htmlspecialchars($tipo) . '</td>';
     
-        $html .= '<td>' . htmlspecialchars($plan['nombre_cliente']) . '</td>';
+    $html .= '<td>' . htmlspecialchars($plan['nombre_cliente']) . '</td>';
 
     // Conductor
     $html .= '<td>' . htmlspecialchars($plan['conductor']) . '</td>';

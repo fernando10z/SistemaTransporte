@@ -633,7 +633,7 @@ ORDER BY fecharegistro DESC;
                       
                       // Tipo de planificación con icono
                       if ($row['tipoPlanificacion'] == 'cliente') {
-                          echo "<td><i class='fas fa-user me-2 text-primary'></i> Cliente</td>";
+                          echo "<td><i class='fas fa-user me-2 text-primary'></i>Cliente</td>";
                       } else {
                           echo "<td><i class='fas fa-building me-2 text-info'></i> Empresa</td>";
                       }
