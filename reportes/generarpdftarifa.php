@@ -28,8 +28,41 @@ function obtenerLogoDB($conn) {
     }
 }
 
+function obtenernombreempresa($conn) {
+    try {
+        $sql = "SELECT nombre_empresa FROM configuracion_empresa WHERE id_configuracion = 4 LIMIT 1";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $resultado ? $resultado['nombre_empresa'] : null;
+    } catch (Exception $e) {
+        return null;
+    }
+}
+
+function obtenerrucempresa($conn) {
+    try {
+        $sql = "SELECT ruc FROM configuracion_empresa WHERE id_configuracion = 4 LIMIT 1";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $resultado ? $resultado['ruc'] : null;
+    } catch (Exception $e) {
+        return null;
+    }
+}
+
+// Obtener logo desde BD
 $logoNombre = obtenerLogoDB($conn);
 $logoSrc = '';
+
+//Obtener Ruc desde BD
+$ruc = obtenerrucempresa($conn);
+
+
+//Obtener Nombre de la empresa BD
+$nombreEmpresa = obtenernombreempresa($conn);
+
 
 if ($logoNombre) {
     $logoPath = __DIR__ . "/../configuracion/empresa/" . $logoNombre;
@@ -86,8 +119,8 @@ $html .= '<table width="100%">
         </td>
         <td width="60%" style="text-align: center;">
             <div class="header">
-                <h2 class="title">SISTEMA DE TARIFAS</h2>
-                <p class="subtitle">Reporte de Tarifas de Servicios</p>
+                <div class="title">'. $nombreEmpresa .'</div>
+                <div class="subtitle">Ruc de la empresa: '. $ruc .'</div>
             </div>
         </td>
         <td width="20%" style="text-align: right;">

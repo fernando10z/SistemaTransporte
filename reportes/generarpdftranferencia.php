@@ -28,8 +28,41 @@ function obtenerLogoDB($conn) {
     }
 }
 
+function obtenernombreempresa($conn) {
+    try {
+        $sql = "SELECT nombre_empresa FROM configuracion_empresa WHERE id_configuracion = 4 LIMIT 1";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $resultado ? $resultado['nombre_empresa'] : null;
+    } catch (Exception $e) {
+        return null;
+    }
+}
+
+function obtenerrucempresa($conn) {
+    try {
+        $sql = "SELECT ruc FROM configuracion_empresa WHERE id_configuracion = 4 LIMIT 1";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $resultado ? $resultado['ruc'] : null;
+    } catch (Exception $e) {
+        return null;
+    }
+}
+
+// Obtener logo desde BD
 $logoNombre = obtenerLogoDB($conn);
 $logoSrc = '';
+
+//Obtener Ruc desde BD
+$ruc = obtenerrucempresa($conn);
+
+
+//Obtener Nombre de la empresa BD
+$nombreEmpresa = obtenernombreempresa($conn);
+
 
 if ($logoNombre) {
     $logoPath = __DIR__ . "/../configuracion/empresa/" . $logoNombre;
@@ -49,6 +82,11 @@ if ($logoNombre) {
         $logoBase64 = base64_encode(file_get_contents($logoPath));
         $logoSrc = 'data:' . $mimeType . ';base64,' . $logoBase64;
     }
+}
+
+// Logo alternativo si no existe
+if (empty($logoSrc)) {
+    $logoSrc = 'data:image/svg+xml;base64,' . base64_encode('<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#5d87ff"/><text x="50%" y="50%" font-size="16" text-anchor="middle" fill="white" dy=".3em">EMPRESA</text></svg>');
 }
 
 // Configuración de estilos CSS
@@ -81,8 +119,8 @@ $html .= '<table width="100%">
         </td>
         <td width="60%" style="text-align: center;">
             <div class="header">
-                <h2 class="title">SISTEMA DE GESTIÓN</h2>
-                <p class="subtitle">Reporte de Transacciones Financieras</p>
+                <div class="title">'. $nombreEmpresa .'</div>
+                <div class="subtitle">Ruc de la empresa: '. $ruc .'</div>
             </div>
         </td>
         <td width="20%" style="text-align: right;">
