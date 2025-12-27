@@ -628,7 +628,7 @@ ORDER BY fecharegistro DESC;
                   $planificaciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
                   
                   foreach ($planificaciones as $row) {
-                      echo "<tr>";
+                      echo "<tr data-tipo='{$row['tipoPlanificacion']}'>";
                       echo "<td><span class='id-planificacion'>{$row['idPlanificacion']}</span></td>";
                       
                       // Tipo de planificación con icono
@@ -637,7 +637,7 @@ ORDER BY fecharegistro DESC;
                       } else {
                           echo "<td><i class='fas fa-building me-2 text-info'></i> Empresa</td>";
                       }
-                     echo "<td>{$row['nombre_cliente']}</td>";
+                      echo "<td>{$row['nombre_cliente']}</td>";
 
                       echo "<td>{$row['conductor']}</td>";
                       echo "<td>{$row['origen']}</td>";
@@ -655,16 +655,16 @@ ORDER BY fecharegistro DESC;
                       echo "<td><span class='badge bg-{$badgeClass}'><i class='fas fa-circle me-1'></i> {$row['estado']}</span></td>";
                                     
                       // Botones de acción
-                     // Botones de acción
+                      // Botones de acción
                       echo "<td class='text-center'>";
                       echo "<div class='btn-group'>";
 
                       // Botón Ver
                       echo "<button class='btn btn-sm btn-info me-1 ver' data-id='{$row['idPlanificacion']}' data-type='{$row['tipoPlanificacion']}' title='Ver'><i class='fas fa-eye'></i></button>";
 
-                     $disabledreprogramar = $row['estado'] === 'Completado' ? 'disabled' : '';
+                      $disabledreprogramar = $row['estado'] === 'Completado' ? 'disabled' : '';
 
-                  echo "<button class='btn btn-sm btn-primary me-1 reprogramar' data-id='{$row['idPlanificacion']}' data-type='{$row['tipoPlanificacion']}' title='Reprogramar' $disabledreprogramar><i class='fas fa-calendar-alt'></i></button>";
+                      echo "<button class='btn btn-sm btn-primary me-1 reprogramar' data-id='{$row['idPlanificacion']}' data-type='{$row['tipoPlanificacion']}' title='Reprogramar' $disabledreprogramar><i class='fas fa-calendar-alt'></i></button>";
 
                       // Botón Cambiar Estado (deshabilitar según estado)
                       $estadoActual = $row['estado'];
@@ -850,7 +850,7 @@ $(document).ready(function() {
       
       filteredData.push({
         idPlanificacion: $row.find('.id-planificacion').text(),
-        tipoPlanificacion: $(rowData[1]).text().trim().includes('Cliente') ? 'cliente' : 'empresa',
+        tipoPlanificacion: $row.data('tipo'),
         nombre_cliente: rowData[2],
         conductor: rowData[3],
         origen: rowData[4],
