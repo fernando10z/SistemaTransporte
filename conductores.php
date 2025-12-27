@@ -547,6 +547,7 @@
                     <th>Licencia</th>
                     <th>Teléfono</th>
                     <th>Correo</th>
+                    <th>Horas Trabajo</th> 
                     <th width="90px">Estado</th>
                     <th>Token QR</th>
                     <th width="150px" class="text-center">Acciones</th>
@@ -560,6 +561,7 @@
                     <th><input type="text" class="column-filter" placeholder="Licencia"></th>
                     <th><input type="text" class="column-filter" placeholder="Teléfono"></th>
                     <th><input type="text" class="column-filter" placeholder="Correo"></th>
+                    <th><input type="text" class="column-filter" placeholder="Horas"></th>
                     <th><input type="text" class="column-filter" placeholder="Estado"></th>
                     <th><input type="text" class="column-filter" placeholder="Token QR"></th>
                     <th></th>
@@ -583,6 +585,7 @@
                           c.Correo,
                           c.tipolicencia,
                           c.estado,
+                          c.horastrabajo,
                           qr.idcodigoQR,
                           qr.token_qr,
                           qr.fecha_generacion
@@ -612,6 +615,9 @@
                       
                       // Correo con formato de enlace
                       echo "<td><a href='mailto:{$row['Correo']}' class='text-decoration-none'><i class='fas fa-envelope me-1 text-warning'></i> {$row['Correo']}</a></td>";
+
+                      // Horas de trabajo
+                      echo "<td>{$row['horastrabajo']}</td>";
                       
                       // Estado (badge)
                       if ($row['estado'] === 'Activo') {
@@ -752,7 +758,7 @@ $(document).ready(function() {
       
       // Aplicar filtros por columna
       this.api().columns().every(function(colIdx) {
-        if (colIdx === 10) return; // No aplicar filtro a la columna de acciones
+        if (colIdx === 11) return; // No aplicar filtro a la columna de acciones
         
         var column = this;
         $('input', $('.filter-header th').eq(column.index())).on('keyup change', function() {
@@ -765,7 +771,7 @@ $(document).ready(function() {
       // Inicializar filtros avanzados
       // Filtro por estado
       $('#filtroEstado').on('change', function() {
-        table.column(8).search(this.value).draw();
+        table.column(9).search(this.value).draw();
       });
       
       // Filtro por género
@@ -800,11 +806,11 @@ $(document).ready(function() {
     // Personalizar el render de ciertas columnas
     columnDefs: [
       { 
-        targets: 8, // Estado
+        targets: 9, // Estado
         className: 'text-center'
       },
       {
-        targets: 10, // Acciones
+        targets: 11, // Acciones
         className: 'text-center',
         orderable: false,
         searchable: false
