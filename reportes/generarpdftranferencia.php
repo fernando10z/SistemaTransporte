@@ -153,28 +153,35 @@ foreach ($transacciones as $transaccion) {
 
 $saldo = $totalIngresos - $totalEgresos;
 
-$html .= '<div style="margin-top: 15px; font-weight: bold; padding: 10px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa;">
-    <div style="display: flex; justify-content: space-between;">
-        <div style="width: 20%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px;">
-            <strong>Total Transacciones:</strong> ' . $totalTransacciones . '
-        </div>
-        <div style="width: 15%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px;">
-            <strong>Ingresos:</strong> ' . $ingresos . '
-        </div>
-        <div style="width: 15%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px;">
-            <strong>Egresos:</strong> ' . $egresos . '
-        </div>
-        <div style="width: 20%; text-align: center; padding: 10px; background-color: #d4edda; border-radius: 5px;">
-            <strong>Total Ingresos:</strong> S/ ' . number_format($totalIngresos, 2) . '
-        </div>
-        <div style="width: 20%; text-align: center; padding: 10px; background-color: #f8d7da; border-radius: 5px;">
-            <strong>Total Egresos:</strong> S/ ' . number_format($totalEgresos, 2) . '
-        </div>
-        <div style="width: 20%; text-align: center; padding: 10px; background-color: ' . ($saldo >= 0 ? '#d4edda' : '#f8d7da') . '; border-radius: 5px;">
-            <strong>Saldo:</strong> S/ ' . number_format($saldo, 2) . '
-        </div>
-    </div>
-</div>';
+$html .= '
+<table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; margin-top: 15px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa;">
+    <tr>
+        <td style="padding: 10px;">
+            <table width="100%" cellpadding="0" cellspacing="4" style="table-layout: fixed;">
+                <tr>
+                    <td align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <strong>Total Transacciones:</strong><br>' . $totalTransacciones . '
+                    </td>
+                    <td align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <strong>Ingresos:</strong><br>' . $ingresos . '
+                    </td>
+                    <td align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <strong>Egresos:</strong><br>' . $egresos . '
+                    </td>
+                    <td align="center" style="background-color: #d4edda; padding: 10px; border-radius: 5px;">
+                        <strong>Total Ingresos:</strong><br>S/ ' . number_format($totalIngresos, 2) . '
+                    </td>
+                    <td align="center" style="background-color: #f8d7da; padding: 10px; border-radius: 5px;">
+                        <strong>Total Egresos:</strong><br>S/ ' . number_format($totalEgresos, 2) . '
+                    </td>
+                    <td align="center" style="background-color: ' . ($saldo >= 0 ? '#d4edda' : '#f8d7da') . '; padding: 10px; border-radius: 5px;">
+                        <strong>Saldo:</strong><br>S/ ' . number_format($saldo, 2) . '
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>';
 
 // Sección del listado de transacciones
 $html .= '<div style="margin-top: 15px; font-weight: bold; background-color: #5d87ff; color: white; padding: 10px; border-radius: 5px;">LISTADO DE TRANSACCIONES FILTRADO</div>';

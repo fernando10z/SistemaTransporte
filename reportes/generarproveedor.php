@@ -142,19 +142,26 @@ foreach ($proveedores as $proveedor) {
     }
 }
 
-$html .= '<div style="margin-top: 15px; font-weight: bold; padding: 10px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa;">
-    <div style="display: flex; justify-content: space-between;">
-        <div style="width: 32%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px;">
-            <strong>Total Proveedores:</strong> ' . $totalProveedores . '
-        </div>
-        <div style="width: 32%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px;">
-            <strong>Proveedores Activos:</strong> ' . $proveedoresActivos . '
-        </div>
-        <div style="width: 32%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px;">
-            <strong>Proveedores Inactivos:</strong> ' . $proveedoresInactivos . '
-        </div>
-    </div>
-</div>';
+$html .= '
+<table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; margin-top: 15px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa;">
+    <tr>
+        <td style="padding: 10px;">
+            <table width="100%" cellpadding="0" cellspacing="5" style="table-layout: fixed;">
+                <tr>
+                    <td align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <span style="color: #000000;"><strong>Total Proveedores:</strong> ' . $totalProveedores . '</span>
+                    </td>
+                    <td align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <span style="color: #000000;"><strong>Proveedores Activos:</strong> ' . $proveedoresActivos . '</span>
+                    </td>
+                    <td align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <span style="color: #000000;"><strong>Proveedores Inactivos:</strong> ' . $proveedoresInactivos . '</span>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>';
 
 // Sección del listado de proveedores
 $html .= '<div style="margin-top: 15px; font-weight: bold; background-color: #5d87ff; color: white; padding: 10px; border-radius: 5px;">LISTADO DE PROVEEDORES FILTRADO</div>';

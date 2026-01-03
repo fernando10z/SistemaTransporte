@@ -100,7 +100,17 @@ $html = '<style>
     .table-container td { padding: 6px; border: 1px solid #ccc; }
     .table-container tr:nth-child(even) { background-color: #f9f9f9; }
     .pie-pagina { margin-top: 20px; padding: 12px; font-size: 13px; border: 1px solid #333; border-radius: 10px; text-align: center; background-color: #f8f9fa; }
-    .badge { padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; color: white; }
+    .badge { 
+        display: inline-block;
+        padding: 2px 4px;
+        border-radius: 4px; 
+        font-size: 10px; 
+        font-weight: bold; 
+        color: white;
+        white-space: nowrap;  
+        min-width: 60px;
+        text-align: center;
+    }
     .badge-success { background-color: #28a745; }
     .badge-secondary { background-color: #6c757d; }
     .text-right { text-align: right; }
@@ -141,19 +151,26 @@ foreach ($asistencias as $asistencia) {
     }
 }
 
-$html .= '<div style="margin-top: 15px; font-weight: bold; padding: 10px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa;">
-    <div style="display: flex; justify-content: space-between;">
-        <div style="width: 32%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px;">
-            <strong>Total Registros:</strong> ' . $totalAsistencias . '
-        </div>
-        <div style="width: 32%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px;">
-            <strong>Ingresos:</strong> ' . $ingresos . '
-        </div>
-        <div style="width: 32%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px;">
-            <strong>Salidas:</strong> ' . $salidas . '
-        </div>
-    </div>
-</div>';
+$html .= '
+<table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; margin-top: 15px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa;">
+    <tr>
+        <td style="padding: 10px;">
+            <table width="100%" cellpadding="0" cellspacing="5" style="table-layout: fixed;">
+                <tr>
+                    <td align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <span style="color: #000000;"><strong>Total Registros:</strong> ' . $totalAsistencias . '</span>
+                    </td>
+                    <td align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <span style="color: #000000;"><strong>Ingresos:</strong> ' . $ingresos . '</span>
+                    </td>
+                    <td align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <span style="color: #000000;"><strong>Salidas:</strong> ' . $salidas . '</span>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>';
 
 // Sección del listado de asistencias
 $html .= '<div style="margin-top: 15px; font-weight: bold; background-color: #5d87ff; color: white; padding: 10px; border-radius: 5px;">DETALLE DE ASISTENCIAS</div>';

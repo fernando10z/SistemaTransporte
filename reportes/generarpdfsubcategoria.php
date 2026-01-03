@@ -160,17 +160,26 @@ foreach ($subcategorias as $subcategoria) {
     $categorias[$categoria]++;
 }
 
-$html .= '<div class="stats-container">
-    <div class="stat-box">
-        <strong>Total SubCategorías:</strong> ' . $totalSubcategorias . '
-    </div>
-    <div class="stat-box">
-        <strong>Activas:</strong> ' . $subcategoriasActivas . '
-    </div>
-    <div class="stat-box">
-        <strong>Inactivas:</strong> ' . $subcategoriasInactivas . '
-    </div>
-</div>';
+$html .= '
+<table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; margin-top: 15px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa;">
+    <tr>
+        <td style="padding: 10px;">
+            <table width="100%" cellpadding="0" cellspacing="5" style="table-layout: fixed;">
+                <tr>
+                    <td align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <span style="color: #000000;"><strong>Total SubCategorías:</strong> ' . $totalSubcategorias . '</span>
+                    </td>
+                    <td align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <span style="color: #000000;"><strong>Activas:</strong> ' . $subcategoriasActivas . '</span>
+                    </td>
+                    <td align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <span style="color: #000000;"><strong>Inactivas:</strong> ' . $subcategoriasInactivas . '</span>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>';
 
 // Distribución por almacén
 $html .= '<div style="margin-top: 15px; font-weight: bold; background-color: #5d87ff; color: white; padding: 10px; border-radius: 5px;">DISTRIBUCIÓN POR ALMACÉN</div>';

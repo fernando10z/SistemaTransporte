@@ -158,33 +158,50 @@ foreach ($cotizaciones as $cotizacion) {
     $montoTotal += floatval($cotizacion['montoFinal']);
 }
 
-$html .= '<div style="margin-top: 15px; font-weight: bold; padding: 10px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa;">
-    <div style="display: flex; justify-content: space-between;">
-        <div style="width: 24%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px;">
-            <strong>Total Cotizaciones:</strong> ' . $totalCotizaciones . '
-        </div>
-        <div style="width: 24%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px;">
-            <strong>Naturales:</strong> ' . $cotizacionesNaturales . '
-        </div>
-        <div style="width: 24%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px;">
-            <strong>Empresas:</strong> ' . $cotizacionesEmpresas . '
-        </div>
-        <div style="width: 24%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px;">
-            <strong>Monto Total:</strong> S/ ' . number_format($montoTotal, 2) . '
-        </div>
-    </div>
-    <div style="margin-top: 10px; display: flex; justify-content: space-between;">
-        <div style="width: 32%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px;">
-            <strong>Pendientes:</strong> ' . $estados['Pendiente'] . '
-        </div>
-        <div style="width: 32%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px;">
-            <strong>Aceptadas:</strong> ' . $estados['Aceptada'] . '
-        </div>
-        <div style="width: 32%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px;">
-            <strong>Rechazadas:</strong> ' . $estados['Rechazada'] . '
-        </div>
-    </div>
-</div>';
+$html .= '
+<table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; font-weight: bold; margin-top: 15px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa;">
+    <tr>
+        <td style="padding: 15px;">
+            <table width="100%" cellpadding="0" cellspacing="10">
+                <tr>
+                    <td width="25%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">Total Cotizaciones</div>
+                        <div style="font-size: 14px;">' . $totalCotizaciones . '</div>
+                    </td>
+                    <td width="25%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">Naturales</div>
+                        <div style="font-size: 14px;">' . $cotizacionesNaturales . '</div>
+                    </td>
+                    <td width="25%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">Empresas</div>
+                        <div style="font-size: 14px;">' . $cotizacionesEmpresas . '</div>
+                    </td>
+                    <td width="25%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">Monto Total</div>
+                        <div style="font-size: 14px;">S/ ' . number_format($montoTotal, 2) . '</div>
+                    </td>
+                </tr>
+            </table>
+
+            <table width="100%" cellpadding="0" cellspacing="10" style="margin-top: 5px;">
+                <tr>
+                    <td width="16.5%">&nbsp;</td> <td width="22%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #666; margin-bottom: 5px;">Pendientes</div>
+                        <div style="font-size: 14px;">' . $estados['Pendiente'] . '</div>
+                    </td>
+                    <td width="22%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #666; margin-bottom: 5px;">Aceptadas</div>
+                        <div style="font-size: 14px;">' . $estados['Aceptada'] . '</div>
+                    </td>
+                    <td width="22%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #666; margin-bottom: 5px;">Rechazadas</div>
+                        <div style="font-size: 14px;">' . $estados['Rechazada'] . '</div>
+                    </td>
+                    <td width="16.5%">&nbsp;</td> </tr>
+            </table>
+        </td>
+    </tr>
+</table>';
 
 // Sección del listado de cotizaciones
 $html .= '<div style="margin-top: 15px; font-weight: bold; background-color: #5d87ff; color: white; padding: 10px; border-radius: 5px;">LISTADO DE COTIZACIONES FILTRADO</div>';

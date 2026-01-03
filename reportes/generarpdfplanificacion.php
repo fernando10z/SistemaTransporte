@@ -158,32 +158,45 @@ foreach ($planificaciones as $plan) {
     }
 }
 
-$html .= '<div class="stats-container">
-    <div class="stat-box">
-        <strong>Total Planificaciones:</strong> ' . $totalPlanificaciones . '
-    </div>
-    <div class="stat-box">
-        <strong>Planificaciones Cliente:</strong> ' . $planificacionesCliente . '
-    </div>
-    <div class="stat-box">
-        <strong>Planificaciones Empresa:</strong> ' . $planificacionesEmpresa . '
-    </div>
-</div>';
+$html .= '
+<table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; margin-top: 15px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa;">
+    <tr>
+        <td style="padding: 10px;">
+            
+            <table width="100%" cellpadding="0" cellspacing="5" style="table-layout: fixed;">
+                <tr>
+                    <td align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <span style="color: #000000;"><strong>Total Planificaciones:</strong> ' . $totalPlanificaciones . '</span>
+                    </td>
+                    <td align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <span style="color: #000000;"><strong>Planificaciones Cliente:</strong> ' . $planificacionesCliente . '</span>
+                    </td>
+                    <td align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <span style="color: #000000;"><strong>Planificaciones Empresa:</strong> ' . $planificacionesEmpresa . '</span>
+                    </td>
+                </tr>
+            </table>
 
-$html .= '<div class="stats-container">
-    <div class="stat-box">
-        <strong>Planificadas:</strong> ' . $estados['Planificado'] . '
-    </div>
-    <div class="stat-box">
-        <strong>Reprogramadas:</strong> ' . $estados['Reprogramado'] . '
-    </div>
-    <div class="stat-box">
-        <strong>Canceladas:</strong> ' . $estados['Cancelado'] . '
-    </div>
-    <div class="stat-box">
-        <strong>Completadas:</strong> ' . $estados['Completado'] . '
-    </div>
-</div>';
+            <table width="100%" cellpadding="0" cellspacing="5" style="table-layout: fixed; margin-top: 5px;">
+                <tr>
+                    <td align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <span style="color: #000000;"><strong>Planificadas:</strong> ' . $estados['Planificado'] . '</span>
+                    </td>
+                    <td align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <span style="color: #000000;"><strong>Reprogramadas:</strong> ' . $estados['Reprogramado'] . '</span>
+                    </td>
+                    <td align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <span style="color: #000000;"><strong>Canceladas:</strong> ' . $estados['Cancelado'] . '</span>
+                    </td>
+                    <td align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <span style="color: #000000;"><strong>Completadas:</strong> ' . $estados['Completado'] . '</span>
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+</table>';
 
 // Sección del listado de planificaciones
 $html .= '<div style="margin-top: 15px; font-weight: bold; background-color: #5d87ff; color: white; padding: 10px; border-radius: 5px;">LISTADO DE PLANIFICACIONES</div>';

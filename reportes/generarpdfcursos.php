@@ -140,19 +140,26 @@ foreach ($cursos as $curso) {
     }
 }
 
-$html .= '<div style="margin-top: 15px; font-weight: bold; padding: 10px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa;">
-    <div style="display: flex; justify-content: space-between;">
-        <div style="width: 32%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px;">
-            <strong>Total Cursos:</strong> ' . $totalCursos . '
-        </div>
-        <div style="width: 32%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px;">
-            <strong>Cursos Activos:</strong> ' . $cursosActivos . '
-        </div>
-        <div style="width: 32%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px;">
-            <strong>Cursos Inactivos:</strong> ' . $cursosInactivos . '
-        </div>
-    </div>
-</div>';
+$html .= '
+<table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; margin-top: 15px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa;">
+    <tr>
+        <td style="padding: 10px;">
+            <table width="100%" cellpadding="0" cellspacing="5" style="table-layout: fixed;">
+                <tr>
+                    <td align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <span style="color: #000000;"><strong>Total Cursos:</strong> ' . $totalCursos . '</span>
+                    </td>
+                    <td align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <span style="color: #000000;"><strong>Cursos Activos:</strong> ' . $cursosActivos . '</span>
+                    </td>
+                    <td align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <span style="color: #000000;"><strong>Cursos Inactivos:</strong> ' . $cursosInactivos . '</span>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>';
 
 // Sección del listado de cursos
 $html .= '<div style="margin-top: 15px; font-weight: bold; background-color: #5d87ff; color: white; padding: 10px; border-radius: 5px;">LISTADO DE CURSOS FILTRADO</div>';
