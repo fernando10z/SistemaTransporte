@@ -155,20 +155,37 @@ foreach ($sanciones as $sancion) {
     $tiposSancion[$tipo]++;
 }
 
-$html .= '<div class="stats-container">
-    <div class="stat-box">
-        <strong>Total Sanciones:</strong> ' . $totalSanciones . '
-    </div>
-    <div class="stat-box">
-        <strong>Pendientes:</strong> ' . $sancionesPendientes . '
-    </div>
-    <div class="stat-box">
-        <strong>En Proceso:</strong> ' . $sancionesProceso . '
-    </div>
-    <div class="stat-box">
-        <strong>Resueltas:</strong> ' . $sancionesResueltas . '
-    </div>
-</div>';
+$html .= '
+<table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; font-weight: bold; margin-top: 15px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa;">
+    <tr>
+        <td style="padding: 15px;">
+            <table width="100%" cellpadding="0" cellspacing="10">
+                <tr>
+                    <td width="25%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">Total Sanciones</div>
+                        <div style="font-size: 14px;">' . $totalSanciones . '</div>
+                    </td>
+
+                    <td width="25%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">Pendientes</div>
+                        <div style="font-size: 14px;">' . $sancionesPendientes . '</div>
+                    </td>
+
+                    <td width="25%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">En Proceso</div>
+                        <div style="font-size: 14px;">' . $sancionesProceso . '</div>
+                    </td>
+
+                    <td width="25%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">Resueltas</div>
+                        <div style="font-size: 14px;">' . $sancionesResueltas . '</div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>';
+
 
 // Tipos de sanción
 $html .= '<div style="margin-top: 15px; font-weight: bold; background-color: #5d87ff; color: white; padding: 10px; border-radius: 5px;">TIPOS DE SANCIÓN</div>';

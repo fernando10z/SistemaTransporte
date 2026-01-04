@@ -1,5 +1,6 @@
 <?php
 require_once 'vendor/autoload.php';
+require_once '../conexion/conexion.php';
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
@@ -153,29 +154,58 @@ foreach ($registros as $reg) {
     }
 }
 
-$html .= '<div class="stats-container">
-    <div class="stat-box">
-        <strong>Total Registros:</strong> ' . $totalRegistros . '
-    </div>
-    <div class="stat-box">
-        <strong>Cursos Activos:</strong> ' . $cursosActivos . '
-    </div>
-    <div class="stat-box">
-        <strong>Cursos Terminados:</strong> ' . $cursosTerminados . '
-    </div>
-</div>';
+$html .= '
+<table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; font-weight: bold; margin-top: 15px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa;">
+    <tr>
+        <td style="padding: 15px;">
+            <table width="100%" cellpadding="0" cellspacing="10">
+                <tr>
+                    <td width="33%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">Total Registros</div>
+                        <div style="font-size: 14px;">' . $totalRegistros . '</div>
+                    </td>
 
-$html .= '<div class="stats-container">
-    <div class="stat-box">
-        <strong>Cursos No Terminados:</strong> ' . $cursosNoTerminados . '
-    </div>
-    <div class="stat-box">
-        <strong>Conductores Activos:</strong> ' . $conductoresActivos . '
-    </div>
-    <div class="stat-box">
-        <strong>Conductores Inactivos:</strong> ' . $conductoresInactivos . '
-    </div>
-</div>';
+                    <td width="33%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">Cursos Activos</div>
+                        <div style="font-size: 14px;">' . $cursosActivos . '</div>
+                    </td>
+
+                    <td width="33%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">Cursos Terminados</div>
+                        <div style="font-size: 14px;">' . $cursosTerminados . '</div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>';
+
+$html .= '
+<table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; font-weight: bold; margin-top: 10px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa;">
+    <tr>
+        <td style="padding: 15px;">
+            <table width="100%" cellpadding="0" cellspacing="10">
+                <tr>
+                    <td width="33%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">Cursos No Terminados</div>
+                        <div style="font-size: 14px;">' . $cursosNoTerminados . '</div>
+                    </td>
+
+                    <td width="33%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">Conductores Activos</div>
+                        <div style="font-size: 14px;">' . $conductoresActivos . '</div>
+                    </td>
+
+                    <td width="33%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">Conductores Inactivos</div>
+                        <div style="font-size: 14px;">' . $conductoresInactivos . '</div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>';
+
 
 // Sección del listado de registros
 $html .= '<div style="margin-top: 15px; font-weight: bold; background-color: #5d87ff; color: white; padding: 10px; border-radius: 5px;">LISTADO DE REGISTROS DE CURSOS</div>';

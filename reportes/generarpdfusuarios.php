@@ -144,19 +144,32 @@ foreach ($usuarios as $usuario) {
     }
 }
 
-$html .= '<div style="margin-top: 15px; font-weight: bold; padding: 10px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa;">
-    <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-        <div style="width: 32%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px; margin-bottom: 5px;">
-            <strong>Total Usuarios:</strong> ' . $totalUsuarios . '
-        </div>
-        <div style="width: 32%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px; margin-bottom: 5px;">
-            <strong>Activos:</strong> ' . $activos . '
-        </div>
-        <div style="width: 32%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px; margin-bottom: 5px;">
-            <strong>Inactivos:</strong> ' . $inactivos . '
-        </div>
-    </div>
-</div>';
+$html .= '
+<table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; font-weight: bold; margin-top: 15px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa;">
+    <tr>
+        <td style="padding: 15px;">
+            <table width="100%" cellpadding="0" cellspacing="10">
+                <tr>
+                    <td width="33%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">Total Usuarios</div>
+                        <div style="font-size: 14px;">' . $totalUsuarios . '</div>
+                    </td>
+
+                    <td width="33%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">Usuarios Activos</div>
+                        <div style="font-size: 14px;">' . $activos . '</div>
+                    </td>
+
+                    <td width="33%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">Usuarios Inactivos</div>
+                        <div style="font-size: 14px;">' . $inactivos . '</div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>';
+
 
 // Sección del listado de usuarios
 $html .= '<div style="margin-top: 15px; font-weight: bold; background-color: #5d87ff; color: white; padding: 10px; border-radius: 5px;">LISTADO DE USUARIOS</div>';

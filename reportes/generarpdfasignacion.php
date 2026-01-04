@@ -16,6 +16,12 @@ function limpiarHTML($texto) {
     return trim($limpio);
 }
 
+// Obtener los datos filtrados desde el formulario POST
+$asignaciones = isset($_POST['filteredData']) ? json_decode($_POST['filteredData'], true) : [];
+
+if (!$asignaciones || empty($asignaciones)) {
+    die("No se recibieron datos para exportar. Por favor aplique filtros y vuelva a intentarlo.");
+}
 // Obtener logo desde la base de datos
 function obtenerLogoDB($conn) {
     try {
@@ -29,16 +35,40 @@ function obtenerLogoDB($conn) {
     }
 }
 
-// Obtener los datos filtrados desde el formulario POST
-$asignaciones = isset($_POST['filteredData']) ? json_decode($_POST['filteredData'], true) : [];
+function obtenernombreempresa($conn) {
+    try {
+        $sql = "SELECT nombre_empresa FROM configuracion_empresa WHERE id_configuracion = 4 LIMIT 1";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $resultado ? $resultado['nombre_empresa'] : null;
+    } catch (Exception $e) {
+        return null;
+    }
+}
 
-if (!$asignaciones || empty($asignaciones)) {
-    die("No se recibieron datos para exportar. Por favor aplique filtros y vuelva a intentarlo.");
+function obtenerrucempresa($conn) {
+    try {
+        $sql = "SELECT ruc FROM configuracion_empresa WHERE id_configuracion = 4 LIMIT 1";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $resultado ? $resultado['ruc'] : null;
+    } catch (Exception $e) {
+        return null;
+    }
 }
 
 // Obtener logo desde BD
 $logoNombre = obtenerLogoDB($conn);
 $logoSrc = '';
+
+//Obtener Ruc desde BD
+$ruc = obtenerrucempresa($conn);
+
+
+//Obtener Nombre de la empresa BD
+$nombreEmpresa = obtenernombreempresa($conn);
 
 if ($logoNombre) {
     $logoPath = __DIR__ . "/../configuracion/empresa/" . $logoNombre;
@@ -97,8 +127,8 @@ $html .= '<table width="100%">
         </td>
         <td width="60%" style="text-align: center; vertical-align: middle;">
             <div class="header">
-                <div class="title">SISTEMA DE GESTIÓN DE TRANSPORTE</div>
-                <div class="subtitle">Reporte de Asignaciones</div>
+                <div class="title">'. $nombreEmpresa .'</div>
+                <div class="subtitle">Ruc de la empresa: '. $ruc .'</div>
             </div>
         </td>
         <td width="20%" style="text-align: right; vertical-align: middle;">

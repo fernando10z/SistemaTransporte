@@ -27,9 +27,42 @@ function obtenerLogoDB($conn) {
         return null;
     }
 }
+
+function obtenernombreempresa($conn) {
+    try {
+        $sql = "SELECT nombre_empresa FROM configuracion_empresa WHERE id_configuracion = 4 LIMIT 1";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $resultado ? $resultado['nombre_empresa'] : null;
+    } catch (Exception $e) {
+        return null;
+    }
+}
+
+function obtenerrucempresa($conn) {
+    try {
+        $sql = "SELECT ruc FROM configuracion_empresa WHERE id_configuracion = 4 LIMIT 1";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $resultado ? $resultado['ruc'] : null;
+    } catch (Exception $e) {
+        return null;
+    }
+}
+
 // Obtener logo desde BD
 $logoNombre = obtenerLogoDB($conn);
 $logoSrc = '';
+
+//Obtener Ruc desde BD
+$ruc = obtenerrucempresa($conn);
+
+
+//Obtener Nombre de la empresa BD
+$nombreEmpresa = obtenernombreempresa($conn);
+
 if ($logoNombre) {
     $logoPath = __DIR__ . "/../configuracion/empresa/" . $logoNombre;
     
@@ -50,16 +83,10 @@ if ($logoNombre) {
     }
 }
 
-// Verificar si el logo existe
-if (!file_exists($logoPath)) {
-    // Logo alternativo si no existe
-    $logoSrc = 'data:image/svg+xml;base64,' . base64_encode('<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#5d87ff"/><text x="50%" y="50%" font-size="20" text-anchor="middle" fill="white" dy=".3em">EMPRESA</text></svg>');
-} else {
-    // Convertir la ruta local a base64 para que Dompdf lo pueda procesar
-    $logoBase64 = base64_encode(file_get_contents($logoPath));
-    $logoSrc = 'data:image/jpeg;base64,' . $logoBase64;
+// Logo alternativo si no existe
+if (empty($logoSrc)) {
+    $logoSrc = 'data:image/svg+xml;base64,' . base64_encode('<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#5d87ff"/><text x="50%" y="50%" font-size="16" text-anchor="middle" fill="white" dy=".3em">EMPRESA</text></svg>');
 }
-
 // Configuración de estilos CSS
 $html = '<style>
     body { font-family: Arial, sans-serif; font-size: 12px; margin: 20px; }
@@ -88,8 +115,8 @@ $html .= '<table width="100%">
         </td>
         <td width="60%" style="text-align: center;">
             <div class="header">
-                <h2 class="title">GESTIÓN DE VEHÍCULOS</h2>
-                <p class="subtitle">Reporte de Vehículos Registrados</p>
+                <h2 class="title">'. $nombreEmpresa .'</h2>
+                <p class="subtitle">Ruc de la empresa: '. $ruc .'</p>
             </div>
         </td>
         <td width="20%" style="text-align: right;">
@@ -114,19 +141,32 @@ foreach ($vehiculos as $vehiculo) {
     }
 }
 
-$html .= '<div style="margin-top: 15px; font-weight: bold; padding: 10px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa;">
-    <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-        <div style="width: 32%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px; margin-bottom: 5px;">
-            <strong>Total Vehículos:</strong> ' . $totalVehiculos . '
-        </div>
-        <div style="width: 32%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px; margin-bottom: 5px;">
-            <strong>Disponibles:</strong> ' . $disponibles . '
-        </div>
-        <div style="width: 32%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px; margin-bottom: 5px;">
-            <strong>Ocupados:</strong> ' . $ocupados . '
-        </div>
-    </div>
-</div>';
+$html .= '
+<table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; font-weight: bold; margin-top: 15px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa;">
+    <tr>
+        <td style="padding: 15px;">
+            <table width="100%" cellpadding="0" cellspacing="10">
+                <tr>
+                    <td width="33%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">Total Vehículos</div>
+                        <div style="font-size: 14px;">' . $totalVehiculos . '</div>
+                    </td>
+
+                    <td width="33%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">Disponibles</div>
+                        <div style="font-size: 14px;">' . $disponibles . '</div>
+                    </td>
+
+                    <td width="33%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">Ocupados</div>
+                        <div style="font-size: 14px;">' . $ocupados . '</div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>';
+
 
 // Sección del listado de vehículos
 $html .= '<div style="margin-top: 15px; font-weight: bold; background-color: #5d87ff; color: white; padding: 10px; border-radius: 5px;">LISTADO DE VEHÍCULOS</div>';

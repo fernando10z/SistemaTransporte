@@ -152,23 +152,53 @@ foreach ($productos as $producto) {
     }
 }
 
-$html .= '<div class="stats-container">
-    <div class="stat-box">
-        <strong>Total Productos:</strong> ' . $totalProductos . '
-    </div>
-    <div class="stat-box">
-        <strong>Productos Activos:</strong> ' . $productosActivos . '
-    </div>
-    <div class="stat-box">
-        <strong>Productos Inactivos:</strong> ' . $productosInactivos . '
-    </div>
-</div>';
+$html .= '
+<table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; font-weight: bold; margin-top: 15px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa;">
+    <tr>
+        <td style="padding: 15px;">
+            <table width="100%" cellpadding="0" cellspacing="10">
+                <tr>
+                    <td width="33%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">Total Productos</div>
+                        <div style="font-size: 14px;">' . $totalProductos . '</div>
+                    </td>
 
-$html .= '<div class="stats-container">
-    <div class="stat-box">
-        <strong>Productos bajo stock mínimo:</strong> ' . $productosBajoStock . '
-    </div>
-</div>';
+                    <td width="33%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">Productos Activos</div>
+                        <div style="font-size: 14px;">' . $productosActivos . '</div>
+                    </td>
+
+                    <td width="33%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">Productos Inactivos</div>
+                        <div style="font-size: 14px;">' . $productosInactivos . '</div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>';
+
+
+$html .= '
+<table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; font-weight: bold; margin-top: 10px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa;">
+    <tr>
+        <td style="padding: 15px;">
+            <table width="100%" cellpadding="0" cellspacing="10">
+                <tr>
+                    <td width="100%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">
+                            Productos bajo stock mínimo
+                        </div>
+                        <div style="font-size: 14px;">
+                            ' . $productosBajoStock . '
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>';
+
 
 // Sección del listado de productos
 $html .= '<div style="margin-top: 15px; font-weight: bold; background-color: #5d87ff; color: white; padding: 10px; border-radius: 5px;">LISTADO DE PRODUCTOS FILTRADO</div>';

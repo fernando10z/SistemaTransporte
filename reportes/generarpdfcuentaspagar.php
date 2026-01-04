@@ -1,5 +1,6 @@
 <?php
 require_once 'vendor/autoload.php';
+require_once '../conexion/conexion.php';
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
@@ -14,18 +15,80 @@ if (!$cuentas || empty($cuentas)) {
     die("No se recibieron datos para exportar. Por favor aplique filtros y vuelva a intentarlo.");
 }
 
-// Obtener la ruta absoluta del logo
-$logoPath = __DIR__ . "/../configuracion/empresa/logo_68336f0e8e937.jpeg";
-
-// Verificar si el logo existe
-if (!file_exists($logoPath)) {
-    // Logo alternativo si no existe
-    $logoSrc = 'data:image/svg+xml;base64,' . base64_encode('<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#5d87ff"/><text x="50%" y="50%" font-size="20" text-anchor="middle" fill="white" dy=".3em">EMPRESA</text></svg>');
-} else {
-    // Convertir la ruta local a base64 para que Dompdf lo pueda procesar
-    $logoBase64 = base64_encode(file_get_contents($logoPath));
-    $logoSrc = 'data:image/jpeg;base64,' . $logoBase64;
+// Obtener logo desde la base de datos
+function obtenerLogoDB($conn) {
+    try {
+        $sql = "SELECT logo FROM configuracion_empresa WHERE id_configuracion = 4 LIMIT 1";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $resultado ? $resultado['logo'] : null;
+    } catch (Exception $e) {
+        return null;
+    }
 }
+
+function obtenernombreempresa($conn) {
+    try {
+        $sql = "SELECT nombre_empresa FROM configuracion_empresa WHERE id_configuracion = 4 LIMIT 1";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $resultado ? $resultado['nombre_empresa'] : null;
+    } catch (Exception $e) {
+        return null;
+    }
+}
+
+function obtenerrucempresa($conn) {
+    try {
+        $sql = "SELECT ruc FROM configuracion_empresa WHERE id_configuracion = 4 LIMIT 1";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $resultado ? $resultado['ruc'] : null;
+    } catch (Exception $e) {
+        return null;
+    }
+}
+
+// Obtener logo desde BD
+$logoNombre = obtenerLogoDB($conn);
+$logoSrc = '';
+
+//Obtener Ruc desde BD
+$ruc = obtenerrucempresa($conn);
+
+
+//Obtener Nombre de la empresa BD
+$nombreEmpresa = obtenernombreempresa($conn);
+
+
+if ($logoNombre) {
+    $logoPath = __DIR__ . "/../configuracion/empresa/" . $logoNombre;
+    
+    if (file_exists($logoPath)) {
+        // Detectar tipo de imagen
+        $extension = strtolower(pathinfo($logoNombre, PATHINFO_EXTENSION));
+        $mimeType = 'image/jpeg';
+        
+        switch ($extension) {
+            case 'png': $mimeType = 'image/png'; break;
+            case 'gif': $mimeType = 'image/gif'; break;
+            case 'webp': $mimeType = 'image/webp'; break;
+            default: $mimeType = 'image/jpeg';
+        }
+        
+        $logoBase64 = base64_encode(file_get_contents($logoPath));
+        $logoSrc = 'data:' . $mimeType . ';base64,' . $logoBase64;
+    }
+}
+
+// Logo alternativo si no existe
+if (empty($logoSrc)) {
+    $logoSrc = 'data:image/svg+xml;base64,' . base64_encode('<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#5d87ff"/><text x="50%" y="50%" font-size="16" text-anchor="middle" fill="white" dy=".3em">EMPRESA</text></svg>');
+}
+
 
 // Configuración de estilos CSS
 $html = '<style>
@@ -56,8 +119,8 @@ $html .= '<table width="100%">
         </td>
         <td width="60%" style="text-align: center;">
             <div class="header">
-                <h2 class="title">SISTEMA DE GESTIÓN</h2>
-                <p class="subtitle">Reporte de Cuentas por Pagar</p>
+                <h2 class="title">'. $nombreEmpresa .'</h2>
+                <p class="subtitle">Ruc de la empresa: '. $ruc .'</p>
             </div>
         </td>
         <td width="20%" style="text-align: right;">
@@ -91,33 +154,59 @@ foreach ($cuentas as $cuenta) {
     }
 }
 
-$html .= '<div style="margin-top: 15px; font-weight: bold; padding: 10px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa;">
-    <div style="display: flex; justify-content: space-between;">
-        <div style="width: 24%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px;">
-            <strong>Total Cuentas:</strong> ' . $totalCuentas . '
-        </div>
-        <div style="width: 24%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px;">
-            <strong>Monto Total:</strong> S/ ' . number_format($totalMonto, 2) . '
-        </div>
-        <div style="width: 24%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px;">
-            <strong>Monto Pagado:</strong> S/ ' . number_format($totalPagado, 2) . '
-        </div>
-        <div style="width: 24%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px;">
-            <strong>Monto Pendiente:</strong> S/ ' . number_format($totalPendiente, 2) . '
-        </div>
-    </div>
-    <div style="margin-top: 10px; display: flex; justify-content: space-between;">
-        <div style="width: 32%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px;">
-            <strong>Pagados:</strong> ' . $estados['Pagado'] . '
-        </div>
-        <div style="width: 32%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px;">
-            <strong>Parciales:</strong> ' . $estados['Parcial'] . '
-        </div>
-        <div style="width: 32%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px;">
-            <strong>Pendientes:</strong> ' . $estados['Pendiente'] . '
-        </div>
-    </div>
-</div>';
+$html .= '
+<table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; font-weight: bold; margin-top: 15px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa;">
+    <tr>
+        <td style="padding: 15px;">
+
+            <!-- Fila 1: Totales y Montos -->
+            <table width="100%" cellpadding="0" cellspacing="10">
+                <tr>
+                    <td width="25%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">Total Cuentas</div>
+                        <div style="font-size: 14px;">' . $totalCuentas . '</div>
+                    </td>
+
+                    <td width="25%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">Monto Total</div>
+                        <div style="font-size: 14px;">S/ ' . number_format($totalMonto, 2) . '</div>
+                    </td>
+
+                    <td width="25%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">Monto Pagado</div>
+                        <div style="font-size: 14px;">S/ ' . number_format($totalPagado, 2) . '</div>
+                    </td>
+
+                    <td width="25%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">Monto Pendiente</div>
+                        <div style="font-size: 14px;">S/ ' . number_format($totalPendiente, 2) . '</div>
+                    </td>
+                </tr>
+            </table>
+
+            <table width="100%" cellpadding="0" cellspacing="10" style="margin-top: 5px;">
+                <tr>
+                    <td width="33%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">Pagados</div>
+                        <div style="font-size: 14px;">' . $estados['Pagado'] . '</div>
+                    </td>
+
+                    <td width="33%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">Parciales</div>
+                        <div style="font-size: 14px;">' . $estados['Parcial'] . '</div>
+                    </td>
+
+                    <td width="33%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">Pendientes</div>
+                        <div style="font-size: 14px;">' . $estados['Pendiente'] . '</div>
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+</table>';
+
 
 // Sección del listado de cuentas por pagar
 $html .= '<div style="margin-top: 15px; font-weight: bold; background-color: #5d87ff; color: white; padding: 10px; border-radius: 5px;">LISTADO DE CUENTAS POR PAGAR</div>';

@@ -154,22 +154,42 @@ foreach ($contratos as $contrato) {
     }
 }
 
-$html .= '<div style="margin-top: 15px; font-weight: bold; padding: 10px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa;">
-    <div style="display: flex; justify-content: space-between;">
-        <div style="width: 24%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px;">
-            <strong>Total Contratos:</strong> ' . $totalContratos . '
-        </div>
-        <div style="width: 24%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px;">
-            <strong>Contratos Naturales:</strong> ' . $contratosNaturales . '
-        </div>
-        <div style="width: 24%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px;">
-            <strong>Contratos Jurídicos:</strong> ' . $contratosJuridicos . '
-        </div>
-        <div style="width: 24%; text-align: center; padding: 10px; background-color: #e9ecef; border-radius: 5px;">
-            <strong>Estados:</strong> P(' . $estados['Pendiente'] . ') EP(' . $estados['En Proceso'] . ') C(' . $estados['Completado'] . ') A(' . $estados['Anulado'] . ')
-        </div>
-    </div>
-</div>';
+$html .= '
+<table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; font-weight: bold; margin-top: 15px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa;">
+    <tr>
+        <td style="padding: 15px;">
+            <table width="100%" cellpadding="0" cellspacing="10">
+                <tr>
+                    <td width="25%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">Total Contratos</div>
+                        <div style="font-size: 14px;">' . $totalContratos . '</div>
+                    </td>
+
+                    <td width="25%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">Naturales</div>
+                        <div style="font-size: 14px;">' . $contratosNaturales . '</div>
+                    </td>
+
+                    <td width="25%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">Jurídicos</div>
+                        <div style="font-size: 14px;">' . $contratosJuridicos . '</div>
+                    </td>
+
+                    <td width="25%" align="center" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                        <div style="font-size: 11px; color: #555; margin-bottom: 5px;">Estados</div>
+                        <div style="font-size: 12px;">
+                            P(' . $estados['Pendiente'] . ')
+                            EP(' . $estados['En Proceso'] . ')
+                            C(' . $estados['Completado'] . ')
+                            A(' . $estados['Anulado'] . ')
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>';
+
 
 // Sección del listado de contratos
 $html .= '<div style="margin-top: 15px; font-weight: bold; background-color: #5d87ff; color: white; padding: 10px; border-radius: 5px;">LISTADO DE CONTRATOS FILTRADO</div>';
