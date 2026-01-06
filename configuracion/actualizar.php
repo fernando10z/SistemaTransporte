@@ -1,9 +1,6 @@
 <?php
 include '../conexion/conexion.php';
 
-// Limpiamos cualquier output previo
-ob_clean();
-
 // Forzamos el tipo de contenido a JSON
 header('Content-Type: application/json');
 

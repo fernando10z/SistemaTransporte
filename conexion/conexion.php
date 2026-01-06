@@ -1,8 +1,8 @@
 <?php
-$host = "localhost";
+$host = "mysql";
 $dbname = "spacioso_transporte";
 $username = "root";
-$password = "";
+$password = "root";
 
 //$host = "localhost";
 //$dbname = "spacioso_transporte";
