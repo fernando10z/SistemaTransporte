@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once 'conexion/conexion.php';
 // variables para configuración de empresa
 $logo_path = '';

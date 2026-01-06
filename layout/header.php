@@ -443,7 +443,7 @@
 
             <!-- Footer del dropdown -->
             <div class="dropdown-footer">
-              <a href="../login.php" class="btn-logout">
+              <a href="../logout.php" class="btn-logout">
                 <i class="ti ti-logout"></i>
                 <span>Cerrar Sesión</span>
               </a>
